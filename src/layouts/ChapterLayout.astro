@@ -1,0 +1,36 @@
+---
+import BaseLayout from "./BaseLayout.astro";
+import Toc from "../components/Toc.astro";
+
+const { title, dek, html, toc, prev, next } = Astro.props;
+---
+<BaseLayout title={title} description={dek}>
+  <section class="hero">
+    <div class="container">
+      <h1>{title}</h1>
+      {dek ? <p class="muted">{dek}</p> : null}
+    </div>
+  </section>
+  <section class="chapter-layout">
+    <article class="chapter-main">
+      <div class="surface" style="padding: 2rem;">
+        <Fragment set:html={html} />
+        <nav class="chapter-nav">
+          {prev ? (
+            <a class="button" href={`/chapters/${prev.slug}`}>← {prev.title}</a>
+          ) : (
+            <span />
+          )}
+          {next ? (
+            <a class="button" href={`/chapters/${next.slug}`}>{next.title} →</a>
+          ) : (
+            <span />
+          )}
+        </nav>
+      </div>
+    </article>
+    <aside>
+      <Toc items={toc} />
+    </aside>
+  </section>
+</BaseLayout>

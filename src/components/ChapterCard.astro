@@ -1,0 +1,13 @@
+---
+const { chapter } = Astro.props;
+---
+<article class="surface" style="padding: 1.5rem; display: grid; gap: 0.75rem;">
+  <div>
+    <h3 style="margin: 0;">{chapter.title}</h3>
+    <p class="muted" style="margin: 0.5rem 0 0;">{chapter.dek}</p>
+  </div>
+  <div class="muted" style="font-size: 0.9rem;">
+    {chapter.domainTags.join(" · ")}
+  </div>
+  <a class="button" href={`/chapters/${chapter.slug}`}>Read chapter</a>
+</article>

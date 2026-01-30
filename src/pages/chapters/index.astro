@@ -1,0 +1,22 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import ChapterCard from "../../components/ChapterCard.astro";
+import { getChaptersIndex } from "../../lib/content";
+
+const chapters = (await getChaptersIndex()).filter(
+  (chapter) => chapter.status === "published",
+);
+---
+<BaseLayout title="Chapters">
+  <section class="hero">
+    <div class="container">
+      <h1>Chapters</h1>
+      <p class="muted">Read the manual from start to finish or jump in.</p>
+    </div>
+  </section>
+  <section class="grid two">
+    {chapters.map((chapter) => (
+      <ChapterCard chapter={chapter} />
+    ))}
+  </section>
+</BaseLayout>

@@ -17,20 +17,27 @@
 		"@astrojs/rss": "4.0.14",
 		"@astrojs/sitemap": "3.6.0",
 		"astro": "5.16.2",
-		"typescript": "5.9.3"
+		"gray-matter": "4.0.3",
+		"markdown-it": "14.1.0",
+		"typescript": "5.9.3",
+		"yaml": "2.8.1",
+		"zod": "4.1.5"
 	},
 	"devDependencies": {
+		"@typescript-eslint/eslint-plugin": "8.46.1",
+		"@typescript-eslint/parser": "8.46.1",
+		"eslint": "9.36.0",
+		"prettier": "3.6.2",
 		"wrangler": "4.56.0"
 	},
 	"private": true,
 	"scripts": {
-		"astro": "astro",
-		"build": "astro build",
-		"cf-typegen": "wrangler types",
-		"check": "astro build && tsc && wrangler deploy --dry-run",
-		"deploy": "wrangler deploy",
 		"dev": "astro dev",
-		"preview": "astro build && wrangler dev"
+		"build:index": "node scripts/build-search-index.mjs",
+		"build": "npm run build:index && astro build",
+		"preview": "astro preview",
+		"lint": "eslint .",
+		"format": "prettier -w ."
 	},
 	"type": "module"
 }

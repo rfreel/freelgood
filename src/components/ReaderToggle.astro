@@ -1,0 +1,29 @@
+<button class="button" type="button" data-reader-toggle>
+  Reader: <span data-reader-label>off</span>
+</button>
+
+<script is:inline>
+  (function () {
+    var button = document.querySelector("[data-reader-toggle]");
+    var label = document.querySelector("[data-reader-label]");
+    if (!button || !label) return;
+
+    function applyReader(enabled) {
+      if (enabled) {
+        document.documentElement.dataset.reader = "true";
+      } else {
+        document.documentElement.removeAttribute("data-reader");
+      }
+      localStorage.setItem("reader", enabled ? "true" : "false");
+      label.textContent = enabled ? "on" : "off";
+    }
+
+    var current = localStorage.getItem("reader") === "true";
+    label.textContent = current ? "on" : "off";
+
+    button.addEventListener("click", function () {
+      current = !current;
+      applyReader(current);
+    });
+  })();
+</script>
