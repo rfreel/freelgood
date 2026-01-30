@@ -1,0 +1,43 @@
+---
+import MarkdownIt from "markdown-it";
+import ChapterLayout from "../../layouts/ChapterLayout.astro";
+import { getAdjacent, getChapterBySlug, getChaptersIndex } from "../../lib/content";
+import { extractHeadings, slugify } from "../../lib/toc";
+
+export async function getStaticPaths() {
+  const chapters = await getChaptersIndex();
+  return chapters
+    .filter((chapter) => chapter.status === "published")
+    .map((chapter) => ({ params: { slug: chapter.slug } }));
+}
+
+const { slug } = Astro.params;
+const { frontmatter, content } = await getChapterBySlug(slug);
+const toc = extractHeadings(content);
+const { prev, next } = await getAdjacent(slug);
+
+const md = new MarkdownIt({
+  html: true,
+  linkify: true,
+});
+
+md.renderer.rules.heading_open = function (tokens, idx, options, env, self) {
+  const token = tokens[idx];
+  const titleToken = tokens[idx + 1];
+  const title = titleToken?.content || "";
+  if (title) {
+    token.attrSet("id", slugify(title));
+  }
+  return self.renderToken(tokens, idx, options);
+};
+
+const html = md.render(content);
+---
+<ChapterLayout
+  title={frontmatter.title}
+  dek={frontmatter.dek}
+  html={html}
+  toc={toc}
+  prev={prev?.status === "published" ? prev : null}
+  next={next?.status === "published" ? next : null}
+/>

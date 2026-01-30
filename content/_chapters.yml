@@ -1,0 +1,16 @@
+- slug: what-is-a-browser
+  title: What is a browser?
+  dek: A practical mental model of what a browser does.
+  domainTags: [web, fundamentals]
+  status: published
+  publishedAt: 2026-01-30
+  updatedAt: 2026-01-30
+  order: 10
+- slug: how-the-internet-works
+  title: How the internet works
+  dek: The journey from a URL to a rendered page.
+  domainTags: [web, fundamentals]
+  status: published
+  publishedAt: 2026-02-02
+  updatedAt: 2026-02-02
+  order: 20

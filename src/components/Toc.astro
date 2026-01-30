@@ -1,0 +1,13 @@
+---
+const { items = [] } = Astro.props;
+---
+<nav class="toc surface">
+  <strong>On this page</strong>
+  <ol>
+    {items.map((item) => (
+      <li style={`margin-left: ${item.depth === 3 ? "1rem" : "0"};`}>
+        <a href={`#${item.id}`}>{item.title}</a>
+      </li>
+    ))}
+  </ol>
+</nav>

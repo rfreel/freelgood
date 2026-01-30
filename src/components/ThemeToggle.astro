@@ -1,0 +1,46 @@
+<button class="button" type="button" data-theme-toggle>
+  Theme: <span data-theme-label>system</span>
+</button>
+
+<script is:inline>
+  (function () {
+    var button = document.querySelector("[data-theme-toggle]");
+    var label = document.querySelector("[data-theme-label]");
+    if (!button || !label) return;
+
+    var modes = ["system", "light", "dark"];
+
+    function applyMode(mode) {
+      var prefersDark =
+        window.matchMedia &&
+        window.matchMedia("(prefers-color-scheme: dark)").matches;
+      var effective = mode === "system" ? (prefersDark ? "dark" : "light") : mode;
+      if (effective === "dark") {
+        document.documentElement.dataset.theme = "dark";
+      } else {
+        document.documentElement.removeAttribute("data-theme");
+      }
+      document.documentElement.dataset.themeMode = mode;
+      localStorage.setItem("theme", mode);
+      label.textContent = mode;
+    }
+
+    var current = document.documentElement.dataset.themeMode || "system";
+    label.textContent = current;
+
+    button.addEventListener("click", function () {
+      var index = modes.indexOf(current);
+      var next = modes[(index + 1) % modes.length];
+      current = next;
+      applyMode(current);
+    });
+
+    window
+      .matchMedia("(prefers-color-scheme: dark)")
+      .addEventListener("change", function () {
+        if ((document.documentElement.dataset.themeMode || "system") === "system") {
+          applyMode("system");
+        }
+      });
+  })();
+</script>
