@@ -1,0 +1,28 @@
+---
+import ChapterLayout from "../../layouts/ChapterLayout.astro";
+import { getAdjacent, getChapterBySlug, getChaptersIndex } from "../../lib/content";
+import { extractHeadings } from "../../lib/toc";
+import { renderMarkdown } from "../../lib/markdown";
+
+export async function getStaticPaths() {
+  const chapters = await getChaptersIndex();
+  return chapters
+    .filter((chapter) => chapter.status === "published")
+    .map((chapter) => ({ params: { slug: chapter.slug } }));
+}
+
+const { slug } = Astro.params;
+const { frontmatter, content } = await getChapterBySlug(slug);
+const toc = extractHeadings(content);
+const { prev, next } = await getAdjacent(slug);
+
+const html = renderMarkdown(content);
+---
+<ChapterLayout
+  title={frontmatter.title}
+  dek={frontmatter.dek}
+  html={html}
+  toc={toc}
+  prev={prev?.status === "published" ? prev : null}
+  next={next?.status === "published" ? next : null}
+/>
